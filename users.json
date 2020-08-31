@@ -3,11 +3,12 @@
     {
       "name": "Adam",
       "password": "shark139737",
-      "userid"
+      "user_id": "1863A"
     },
     {
       "name": "Mary",
       "password": "pass46",
+      "user_id": "1670M"
     }
   ]
 }
