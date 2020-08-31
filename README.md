@@ -8,6 +8,41 @@ All responses will have this form
 }
 
 Response definition for expected value in 'data field'
+### List all users ##
+**Definition**
+'GET /users'
+
+**Response**
+
+- '200 OK' on success
+
+'''json
+[
+  {
+    "name": "Adam",
+    "password": "sharkl139737",
+  }
+]
+
+"POST /devices'
+
+**Arguments**
+- "Name": string' user name
+- "password": string' password for user
+
+
+If a device with given identifier already exists, the existing device will be overwritten
+**Response**
+
+"201 user added" on success
+'''
+  [
+    {
+      "name": "Adam",
+      "password": "sharkl139737",
+    }
+  ]
+
 ### List all devices ##
 
 **Definition**
@@ -65,7 +100,7 @@ If a device with given identifier already exists, the existing device will be ov
   "networkProfile": "CLASS-A"
 }
 '''
-## Delete a dive
+## Delete a device
 DELETE /devices/<deveui>
 
 **Response**
