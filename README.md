@@ -1,40 +1,47 @@
-Usage
+###How to Run Application###
+install all required libraries libraries using pip
+for Example
+  '<pip install flask>'
+  '<pip install flask-restful>'
+  '<pip install flask_sqlalchemy>'
+  '<pip install werkzeug.security>'
 
-All responses will have this form '''json { "data": "content of the response" "message": Description of what happened? }
 
-Response definition for expected value in 'data field'
 
-List all users
-Definition 'GET /users'
+###API Documentation###
 
-Response
+##List all users##
+
+*Definition 'GET /users'*
+
+**Response**
 
 '200 OK' on success
-'''json [ { "name": "Adam", "password": "sharkl139737", } ]
+'''json [ { "username": "Adam", "password": "sharkl139737", } ]
 
-"POST /devices'
+*Definition 'POST /devices'*
 
-Arguments
+**Arguments**
 
-"Name": string' user name
+"username": string' user name
 "password": string' password for user
 If a device with given identifier already exists, the existing device will be overwritten Response
 
-"201 user added" on success ''' [ { "name": "Adam", "password": "sharkl139737", } ]
+[ { "username": "Adam", "password": "sharkl139737", } ]
 
 List all devices
 Definition 'GET /devices'
 
-Response
+**Response**
 
 '200 OK' on success
 '''json [ { "deviceName": "TempSensor", "deveui": "00-80-00-00-04-01-80-4d", "devProfile": "US915", "networkProfile": "CLASS-A" } ]
 
-##Adding a new Device## Definition
+##Adding a new Device##
 
-"POST /devices'
+*Definition "POST /devices'*
 
-Arguments
+**Arguments**
 
 "deviceName": string' friendly name for device
 "deveui": string' unique device EUI
@@ -46,23 +53,13 @@ If a device with given identifier already exists, the existing device will be ov
 
 ##Lookup device details## 'GET /device/'
 
-Response -'404 Not Found' if the device does not exists
+**Response**
+-'Device not found' if the device does not exists
 
-'200 OK' on success
+
 ''' { "deviceName": "TempSensor", "deveui": "00-80-00-00-04-01-80-4d", "devProfile": "US915", "networkProfile": "CLASS-A" } '''
 
-Delete a device
-DELETE /devices/
+##Delete a device 'DELETE /devices/'
 
-Response --'404 Not found' if the device does not exist --'204 No Content' on success
-
-##List all Uplinks##
-
-Definition 'GET /uplinks/'
-
-Response
-
-'200 OK' on success
-'''json [ { "deveui": "00-80-00-00-04-01-80-4d", "gatewayeui": "00-80-00-00-00-01-5d-e4" "time": "", "payload": "CLASS-A" "size":
-
-} ]
+#Response
+--'Device Not found' if the device does not exist --'204 No Content' on success

@@ -39,7 +39,7 @@ def close_connection(exception):
     if db is not None:
         db.close()
 
-#define the tables in database
+#define the table models in database
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50))
@@ -73,15 +73,18 @@ class UserList(Resource):
             output.append(user_data)
 
         return jsonify({'users': output})
-        ## create new user##
+
+    ## create new user##
     def post(self):
+        #initialize request parser, set parameter arguments
         parser = reqparse.RequestParser()
         parser.add_argument('username', required=True)
         parser.add_argument('password', required=True)
+        #save arguments into object
         args = parser.parse_args()
         password = args['password']
         username = args['username']
-
+        #hash the password
         hash_password = generate_password_hash(password, method='sha256')
 
         new_user = Users(username=username, password = hash_password)
@@ -91,9 +94,9 @@ class UserList(Resource):
         return ({'message': 'User Created', 'data': args}, 201)
 class User(Resource):
     def get(self, identifier):
+        # get user if exists
         user = Users.query.filter_by(username = identifier).first()
-
-
+        #handle if user doesn't exist
         if not user:
             return jsonify({'message':'No user found'})
         user_data = {}
@@ -150,7 +153,7 @@ class Device(Resource):
         device = Devices.query.filter_by(deveui= identifier).first()
 
         if not device:
-            return jsonify({'message': 'device not found'})
+            return jsonify({'message': 'Device not found'})
         device_data = {}
         device_data['deviceName'] = device.deviceName
         device_data['deveui'] = device.deveui
@@ -159,6 +162,7 @@ class Device(Resource):
 
         return jsonify({'device': device_data})
 
+# add api routes and endpoints
 
 api.add_resource(DeviceList, '/devices')
 api.add_resource(Device, '/devices/<string:identifier>')
