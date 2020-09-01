@@ -1,15 +1,15 @@
-### How to Run Application
+# How to Run Application
 
 install all required libraries libraries using pip
 for Example
-  '<pip install flask>'
-  '<pip install flask-restful>'
-  '<pip install flask_sqlalchemy>'
-  '<pip install werkzeug.security>'
+  'pip install flask>'
+  'pip install flask-restful'
+  'pip install flask_sqlalchemy'
+  'pip install werkzeug.security'
 
 
 
-### API Documentation
+#API Documentation
 
 ## List all users
 
@@ -62,5 +62,5 @@ If a device with given identifier already exists, the existing device will be ov
 
 ## Delete a device 'DELETE /devices/'
 
-# Response
+*Response*
 --'Device Not found' if the device does not exist --'204 No Content' on success
