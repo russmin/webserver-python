@@ -1,4 +1,5 @@
-###How to Run Application###
+### How to Run Application
+
 install all required libraries libraries using pip
 for Example
   '<pip install flask>'
@@ -8,9 +9,9 @@ for Example
 
 
 
-###API Documentation###
+### API Documentation
 
-##List all users##
+## List all users
 
 *Definition 'GET /users'*
 
@@ -37,7 +38,7 @@ Definition 'GET /devices'
 '200 OK' on success
 '''json [ { "deviceName": "TempSensor", "deveui": "00-80-00-00-04-01-80-4d", "devProfile": "US915", "networkProfile": "CLASS-A" } ]
 
-##Adding a new Device##
+## Adding a new Device
 
 *Definition "POST /devices'*
 
@@ -51,7 +52,7 @@ If a device with given identifier already exists, the existing device will be ov
 
 "201 Device Added" on success ''' { "deviceName": "TempSensor", "deveui": "00-80-00-00-04-01-80-4d", "devProfile": "US915", "networkProfile": "CLASS-A" }
 
-##Lookup device details## 'GET /device/'
+## Lookup device details 'GET /device/'
 
 **Response**
 -'Device not found' if the device does not exists
@@ -59,7 +60,7 @@ If a device with given identifier already exists, the existing device will be ov
 
 ''' { "deviceName": "TempSensor", "deveui": "00-80-00-00-04-01-80-4d", "devProfile": "US915", "networkProfile": "CLASS-A" } '''
 
-##Delete a device 'DELETE /devices/'
+## Delete a device 'DELETE /devices/'
 
-#Response
+# Response
 --'Device Not found' if the device does not exist --'204 No Content' on success
