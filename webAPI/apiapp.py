@@ -2,28 +2,29 @@
 #######
 ##Example webserver and webAPI set-up example##
 ##Written by Russel Ndip##
+
 #import relavent libraries
 import os
 import json, io
 import sqlite3 ##create database for story data created from requests
-import markdown
+
 
 ## imports flask and relavent flask extentions and methods
 from flask import Flask, jsonify, g
 from flask_restful import Resource, Api, reqparse ## flask extension for building
 from flask_sqlalchemy import SQLAlchemy ## flask extension for connecting to a database
-from flask_httppauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # Create the application instance
 app = Flask(__name__)
 db = SQLAlchemy(app) #create database instance and bind to app
 api = Api(app) #create the API instance and bind to app
-auth = HTTPBasicAuth(app)
+
 
 # Configure sqlite database in the current directory
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.dirname(app.root_path) + '/devices.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config["JSON_SORT_KEYS"] = False
 
 #connect and return database
 def get_db():
@@ -43,6 +44,7 @@ class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50))
     password = db.Column(db.String(50))
+
 class Devices(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     deviceName = db.Column(db.String(50))
@@ -50,20 +52,15 @@ class Devices(db.Model):
     devProfile = db.Column(db.String(5))
     networkProfile = db.Column(db.String(7))
 
-@auth.verify_password
-def verify_password(username, password)
-    user = Users.query.filter_by(name=username).first()
-
-    if user and \ check_password_hash(user.password, password):
 
 # Create a URL route in our application for "/"
 @app.route('/')
-@auth.login_required
 def index():
-    return "welcome"
+    return "welcome to the app"
 
 #### next set of classes use flask restful to define endpoints and request methods
 class UserList(Resource):
+    ##get all users##
     def get(self):
         UserList = Users.query.all()
         output = []
@@ -72,22 +69,22 @@ class UserList(Resource):
             user_data = {}
             user_data['username'] = users.username
             user_data['password'] = users.password
-            user_data['user_id'] = users.user_id
+
             output.append(user_data)
 
         return jsonify({'users': output})
-
+        ## create new user##
     def post(self):
         parser = reqparse.RequestParser()
-
         parser.add_argument('username', required=True)
         parser.add_argument('password', required=True)
-
-
         args = parser.parse_args()
-        hash_password = generate_password_hash(args['password'])
+        password = args['password']
+        username = args['username']
 
-        new_user = Users(name= args['name'], password = hash_password, user_id = args['user_id'])
+        hash_password = generate_password_hash(password, method='sha256')
+
+        new_user = Users(username=username, password = hash_password)
         db.session.add(new_user)
         db.session.commit()
 
@@ -116,17 +113,55 @@ class User(Resource):
 
 class DeviceList(Resource):
     def get(self):
-        return ''
+        DeviceList  = Devices.query.all()
+        output = []
+        for devices in DeviceList:
+            device_data = {}
+            device_data["deviceName"] = devices.deviceName
+            device_data["deveui"] = devices.deveui
+            device_data["devProfile"] = devices.devProfile
+            device_data["networkProfile"] = devices.networkProfile
+
+            output.append(device_data)
+
+        return jsonify({'devices': output})
+
     def post(self):
-        return ''
+        parser = reqparse.RequestParser()
+        parser.add_argument('deviceName', required=True)
+        parser.add_argument('deveui', required=True)
+        parser.add_argument('devProfile', required=False)
+        parser.add_argument('networkProfile', required=False)
+
+        args = parser.parse_args()
+        deviceName= args['deviceName']
+        deveui = args['deveui']
+        devProfile = args['devProfile']
+        networkProfile = args['networkProfile']
+
+        new_device = Devices(deviceName=deviceName, deveui=deveui, devProfile= devProfile, networkProfile= networkProfile)
+        db.session.add(new_device)
+        db.session.commit()
+        return ({'message': 'Device Added', 'data': args}, 201)
+
+
 class Device(Resource):
     def get(self, identifier):
-        return ''
-    def delete(self, identifier):
-        return ''
+        device = Devices.query.filter_by(deveui= identifier).first()
 
-api.add_resource(DeviceList, '/device')
-api.add_resource(Device, '/device/<string:identifier>')
+        if not device:
+            return jsonify({'message': 'device not found'})
+        device_data = {}
+        device_data['deviceName'] = device.deviceName
+        device_data['deveui'] = device.deveui
+        device_data['devProfile'] = device.devProfile
+        device_data['networkProfile'] = device.networkProfile
+
+        return jsonify({'device': device_data})
+
+
+api.add_resource(DeviceList, '/devices')
+api.add_resource(Device, '/devices/<string:identifier>')
 api.add_resource(UserList, '/users')
 api.add_resource(User, '/users/<string:identifier>')
 if __name__ =='__main__':

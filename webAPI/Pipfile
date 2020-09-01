@@ -10,7 +10,7 @@ flask = "*"
 markdown = "*"
 flask-restful = "*"
 flask-sqlalchemy = "*"
-flask-httpauth = "*"
+werkzeug.security = "*"
 
 [requires]
 python_version = "3.8"
