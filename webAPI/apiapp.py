@@ -1,23 +1,33 @@
 #!/usr/bin/python
 
+#######
+##Example webserver and webAPI set-up example##
+##Written by Russel Ndip##
+
+
+#import relavent libraries
 import os
 import json, io
-import sqlite3
+import sqlite3 ##create database for story data created from requests
 import markdown
 
+## imports flask and relavent flask extentions and methods
 from flask import Flask, jsonify, g
-from flask_restful import Resource, Api, reqparse
-from flask_sqlalchemy import SQLAlchemy
-# Create the application instance
+from flask_restful import Resource, Api, reqparse ## flask extension for building
+from flask_sqlalchemy import SQLAlchemy ## flask extension for connecting to a database
 
+
+# Create the application instance
 app = Flask(__name__)
+# Configure sqlite database in the current directory
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.dirname(app.root_path) + '/devices.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+#create database instance and bind to app
 db = SQLAlchemy(app)
-#create the API
+#create the API instance and bind to app
 api = Api(app)
 
-
+#
 def get_db():
     db = getattr(g,'_database' , None)
     if db is None:
@@ -80,7 +90,9 @@ class UserList(Resource):
         parser.add_argument('user_id', required=True)
 
         args = parser.parse_args()
-        new_user = Users(name= args['name'], password = args['password'], user_id = args['user_id'])
+        hash_password = generate_password_hash(args['password'])
+
+        new_user = Users(name= args['name'], password = hash_password, user_id = args['user_id'])
         db.session.add(new_user)
         db.session.commit()
 
@@ -89,15 +101,26 @@ class User(Resource):
     def get(self, identifier):
         user = Users.query.filter_by(user_id = identifier).first()
 
+
         if not user:
-            return jsonify({'No user found'})
+            return jsonify({'message':'No user found'})
         user_data = {}
         user_data['name'] = user.name
         user_data['password'] = user.password
         user_data['user_id'] = user.user_id
 
         return jsonify({'user': user_data})
-    def delete():
+    def delete(self, identifier):
+        user = Users.query.filter_by(user_id = identifier).first()
+        if not user:
+                return jsonify({'message': 'No user found'})
+        db.session.delete(user)
+        db.session.commit()
+
+        return jsonify({'message': 'The user has been deleted'})
+
+class login(Resource):
+    def post():
         return ''
 class DeviceList(Resource):
     def get():
@@ -107,12 +130,13 @@ class DeviceList(Resource):
 class Device(Resource):
     def get(self, identifier):
         return ''
-    def delete():
+    def delete(self. identifier):
         return ''
 
-##api.add_resource(DeviceList, '/devices')
-##api.add_resource(Device, '/device/<string:identifier>')
+api.add_resource(DeviceList, '/device')
+api.add_resource(Device, '/device/<string:identifier>')
 api.add_resource(UserList, '/user')
 api.add_resource(User, '/user/<string:identifier>')
+api.add_resource(login, '/login')
 if __name__ =='__main__':
     app.run(debug=True)
