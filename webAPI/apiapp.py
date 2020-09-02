@@ -8,7 +8,6 @@ import os
 import json, io
 import sqlite3 ##create database for story data created from requests
 
-
 ## imports flask and relavent flask extentions and methods
 from flask import Flask, jsonify, g
 from flask_restful import Resource, Api, reqparse ## flask extension for building
@@ -71,7 +70,7 @@ class UserList(Resource):
             user_data['password'] = users.password
 
             output.append(user_data)
-
+        ## returns the list of users
         return jsonify({'users': output})
 
     ## create new user##
@@ -108,10 +107,11 @@ class User(Resource):
     def delete(self, identifier):
         user = Users.query.filter_by(username = identifier).first()
         if not user:
+                # return on failure
                 return jsonify({'message': 'No user found'})
         db.session.delete(user)
         db.session.commit()
-
+                #return on success
         return jsonify({'message': 'The user has been deleted'})
 
 class DeviceList(Resource):
@@ -169,4 +169,4 @@ api.add_resource(Device, '/devices/<string:identifier>')
 api.add_resource(UserList, '/users')
 api.add_resource(User, '/users/<string:identifier>')
 if __name__ =='__main__':
-    app.run(debug=True)
+    app.run(port=5000, debug=True) ## runs on localhost:5000/
