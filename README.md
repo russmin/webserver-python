@@ -36,7 +36,10 @@ $ db.create_all()
 ```
 exit()
 ```
-next 
+next run the apiapp
+```
+$ python apiapp.py
+```
 
 # API Documentation
 
