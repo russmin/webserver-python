@@ -2,11 +2,12 @@
 
 install all required libraries libraries using pip
 for Example:
-  `pip install flask`
-  `pip install flask-restful`
-  `pip install flask_sqlalchemy`
-  `pip install werkzeug.security`
-
+```
+  pip install flask
+  pip install flask-restful
+  pip install flask_sqlalchemy
+  pip install werkzeug.security
+```
 
 
 # API Documentation
