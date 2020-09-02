@@ -1,6 +1,7 @@
 # About
 This application uses flask and flask extentions to create a simple websever and API in python. For more information about these libraries used in the app see the docs below
-**Libraries**
+
+
 - *Flask* is lightwieght web appliction framework for python. 
 [Flask Documentation](https://flask.palletsprojects.com/en/1.1.x/)
 - *Flask-Restful* is an extension for Flask that adds support for quickly building REST APIs.
