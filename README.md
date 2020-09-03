@@ -12,11 +12,7 @@ This application uses flask and flask extentions to create a simple websever and
 Flask has many more extensions to extend your web applications. [Popular flask extensions](https://www.fullstackpython.com/flask-extensions-plug-ins-related-libraries.html)
 
 # How to Run Application On conduit
-install python3 and pip3 to the conduit
-```
-  $ sudo opkg install python3
-  $ sudo opkg install python3-modules
-```
+
   install all required libraries libraries using pip
 for Example:
 ```
