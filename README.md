@@ -22,7 +22,7 @@ for Example:
 ```
   $ pip install flask
   $ pip install flask-restful
-  $ pip install flask_sqlalchemy
+  $ pip install flask-sqlalchemy
 ```
 before running the 'apiapp.py' script create the database using the following steps:
 
