@@ -2,7 +2,7 @@
 This application uses flask and flask extentions to create a simple websever and API in python. For more information about these libraries used in the app see the docs below
 
 
-- *Flask* is lightwieght web appliction framework for python. 
+- *Flask* is lightwieght web appliction framework for python.
 [Flask Documentation](https://flask.palletsprojects.com/en/1.1.x/)
 - *Flask-Restful* is an extension for Flask that adds support for quickly building REST APIs.
 [Flask-restful Documentation](https://flask-restful.readthedocs.io/en/latest/index.html)
@@ -47,9 +47,9 @@ $ python apiapp.py
 ### Definition 'GET /users'
 
 **Response**
- 
-```
-json [ { "username": "Adam", "password": "sharkl139737", } ]
+
+```json
+ [ { "username": "Adam", "password": "sharkl139737"} ]
 ```
 on success
 
@@ -60,7 +60,8 @@ on success
 
 "username": string' user name
 "password": string' password for user
-If a device with given identifier already exists, the existing device will be overwritten Response
+
+on success
 ```
 [ { "username": "Adam", "password": "sharkl139737", } ]
 ```
@@ -72,42 +73,65 @@ If a device with given identifier already exists, the existing device will be ov
 `'message': 'No user found'` if no user found
 `{'message': 'The user has been deleted'}` on sucess
 
-## List all devices 
-### Definition 'GET /devices'
+## List all LoraMessages
+### Definition 'GET /LoraMessage'
 
 **Response**
 
-```json [ { "deviceName": "TempSensor", "deveui": "00-80-00-00-04-01-80-4d", "devProfile": "US915", "networkProfile": "CLASS-A" } ]
+```json
+[ {
+    "deviceName": "TempSensor",
+    "deveui": "00-80-00-00-04-01-80-4d",
+    "appeeui": "01-01-01-01-01-01-01",
+    "data": "SF12BW125",
+    "size" : 12,
+    "timestamp" : "2020-09-02T09:02:02.648602Z",
+    "sqn" : 22
+    }
+  ]
 ```
-## Adding a new Device 
-### Definition 'POST /devices'
+## Adding a new LoraMessage
+### Definition 'POST /LoraMessage'
 
 **Arguments**
 
 "deviceName": string' friendly name for device
 "deveui": string' unique device EUI
-"devProfile": string' the Lora device profile
-"networkProfile": string' network class profile
+"appeui": string' app eui
+"data": string' network class profile
+"size": integer
+"timestamp": string'
+"sqn": integer
+
 If a device with given identifier already exists, the existing device will be overwritten Response
 
-`"message": Device Added", 201` on success
-```
-{ "deviceName": "TempSensor", "deveui": "00-80-00-00-04-01-80-4d", "devProfile": "US915", "networkProfile": "CLASS-A" }
+`"message": LoraMessage Added", 201` on success
+```json
+{
+  "deviceName": "TempSensor",
+  "deveui": "00-80-00-00-04-01-80-4d",
+  "appeeui": "01-01-01-01-01-01-01",
+  "data": "SF12BW125",
+  "size" : 12,
+  "timestamp" : "2020-09-02T09:02:02.648602Z",
+  "sqn" : 22
+}
 ```
 
-## Lookup device details 
-### Definition 'GET /devices/<deveui>'
+## Lookup LoraMessage details
+### Definition 'GET /LoraMessage/<deveui>'
 
 **Response**
-`Device not found` if the device does not exists
+`LoraMessage not found` if the LoraMessage does not exists
 on success
+```json
+{   
+  "LoraMessageName": "TempSensor",
+  "deveui": "00-80-00-00-04-01-80-4d",
+  "appeeui": "01-01-01-01-01-01-01",
+  "data": "SF12BW125",
+  "size" : 12,
+  "timestamp" : "2020-09-02T09:02:02.648602Z",
+  "sqn" : 22
+ }
 ```
-{ "deviceName": "TempSensor", "deveui": "00-80-00-00-04-01-80-4d", "devProfile": "US915", "networkProfile": "CLASS-A" } '''
-```
-
-## Delete a device 
-### Definition 'DELETE /devices/<deveui>'
-
-**Response**
-`Device Not found` if the device does not exist
-`204 No Content` on success
