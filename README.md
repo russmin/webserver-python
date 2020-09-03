@@ -11,8 +11,12 @@ This application uses flask and flask extentions to create a simple websever and
 
 Flask has many more extensions to extend your web applications. [Popular flask extensions](https://www.fullstackpython.com/flask-extensions-plug-ins-related-libraries.html)
 
-# How to Run Application
-
+# How to Run Application On conduit
+install python3 to the conduit
+```
+  $ sudo opkg install python3
+  $ sudo opkg install python3-modules
+```
 install all required libraries libraries using pip
 for Example:
 ```
@@ -25,7 +29,7 @@ before running the 'apiapp.py' script create the database using the following st
 
 - open python
 ```
-$ python
+$ python3
 ```
 - in python run the following lines. this will import the db from the app and create the db tables from the models
 ```
@@ -38,7 +42,7 @@ exit()
 ```
 next run the apiapp
 ```
-$ python apiapp.py
+$ python3 apiapp.py
 ```
 
 # API Documentation
