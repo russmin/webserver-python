@@ -118,7 +118,7 @@ on success
 ```
 
 ## Lookup LoraMessage details for a specific device
-### Definition 'GET /LoraMessage/<deveui>'
+### Definition 'GET /LoraMessage/deveui/'
 
 **Response**
 `Lora Message not found` if the LoraMessage does not exists
