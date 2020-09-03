@@ -103,9 +103,8 @@ on success
 "timestamp": string'
 "sqn": integer
 
-If a device with given identifier already exists, the existing device will be overwritten Response
 
-`"message": LoraMessage Added", 201` on success
+`"message": Lora Message Added", 201` on success
 ```json
 {
   "deviceName": "TempSensor",
@@ -118,11 +117,12 @@ If a device with given identifier already exists, the existing device will be ov
 }
 ```
 
-## Lookup LoraMessage details
+## Lookup LoraMessage details for a specific device
 ### Definition 'GET /LoraMessage/<deveui>'
 
 **Response**
-`LoraMessage not found` if the LoraMessage does not exists
+`Lora Message not found` if the LoraMessage does not exists
+
 on success
 ```json
 {   
