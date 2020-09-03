@@ -21,7 +21,7 @@ api = Api(app) #create the API instance and bind to app
 
 
 # Configure sqlite database in the current directory
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.dirname(app.root_path) + '/devices.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.dirname(app.root_path) + '/LoraMessage.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["JSON_SORT_KEYS"] = False
 
@@ -44,12 +44,16 @@ class Users(db.Model):
     username = db.Column(db.String(50))
     password = db.Column(db.String(50))
 
-class Devices(db.Model):
+class LoraMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     deviceName = db.Column(db.String(50))
     deveui =db.Column(db.String(23))
-    devProfile = db.Column(db.String(5))
-    networkProfile = db.Column(db.String(7))
+    appeui = db.Column(db.String(23))
+    data = db.Column(db.String(50))
+    size = db.Column(db.Integer)
+    timestamp = db.Column(db.Integer)
+    sqn = db.Column(db.Integer)
+
 
 
 # Create a URL route in our application for "/"
@@ -114,58 +118,73 @@ class User(Resource):
                 #return on success
         return jsonify({'message': 'The user has been deleted'})
 
-class DeviceList(Resource):
+class LoraMessageList(Resource):
     def get(self):
-        DeviceList  = Devices.query.all()
+        LoraMessageList  = LoraMessage.query.all()
         output = []
-        for devices in DeviceList:
-            device_data = {}
-            device_data["deviceName"] = devices.deviceName
-            device_data["deveui"] = devices.deveui
-            device_data["devProfile"] = devices.devProfile
-            device_data["networkProfile"] = devices.networkProfile
+        for LoraMessage in LoraMessageList:
+            LoraMessage_data = {}
+            LoraMessage_data["deviceName"] = LoraMessage.deviceName
+            LoraMessage_data["deveui"] = LoraMessage.deveui
+            LoraMessage_data["appeui"] = LoraMessage.appeui
+            LoraMessage_data["data"] = LoraMessage.networkProfile
+            LoraMessage_data["size"] = LoraMessage.size
+            LoraMessage_data["timestamp"] = LoraMessage.timestamp
+            LoraMessage_data["sqn"] = LoraMessage.sqn
 
-            output.append(device_data)
 
-        return jsonify({'devices': output})
+            output.append(LoraMessage_data)
+
+        return jsonify({'LoraMessages': output})
 
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('deviceName', required=True)
         parser.add_argument('deveui', required=True)
-        parser.add_argument('devProfile', required=False)
-        parser.add_argument('networkProfile', required=False)
+        parser.add_argument('appeui', required=True)
+        parser.add_argument('data', required=True)
+        parser.add_argument('size', required=True)
+        parser.add_argument('timestamp', required=True)
+        parser.add_argument('sqn', required = True)
 
         args = parser.parse_args()
         deviceName= args['deviceName']
         deveui = args['deveui']
-        devProfile = args['devProfile']
-        networkProfile = args['networkProfile']
+        appeui = args['appeui']
+        data = args['data']
+        size = args['size']
+        timestamp = args['timestamp']
+        sqn = args['sqn']
 
-        new_device = Devices(deviceName=deviceName, deveui=deveui, devProfile= devProfile, networkProfile= networkProfile)
-        db.session.add(new_device)
+        new_LoraMessage = LoraMessage(deviceName=deviceName, deveui=deveui, appeui= appeui, data= data,
+        size = size, timestamp = timestamp, sqn = sqn)
+        db.session.add(new_LoraMessage)
         db.session.commit()
-        return ({'message': 'Device Added', 'data': args}, 201)
+        ##return message
+        return ({'message': 'Lora Message Added', 'data': args}, 201)
 
 
-class Device(Resource):
+class LoraMessage(Resource):
     def get(self, identifier):
-        device = Devices.query.filter_by(deveui= identifier).first()
+        LoraMessage = LoraMessage.query.filter_by(deveui= identifier).first()
 
-        if not device:
+        if not LoraMessage:
             return jsonify({'message': 'Device not found'})
-        device_data = {}
-        device_data['deviceName'] = device.deviceName
-        device_data['deveui'] = device.deveui
-        device_data['devProfile'] = device.devProfile
-        device_data['networkProfile'] = device.networkProfile
+        LoraMessage_data = {}
+        LoraMessage_data["deviceName"] = LoraMessage.deviceName
+        LoraMessage_data["deveui"] = LoraMessage.deveui
+        LoraMessage_data["appeui"] = LoraMessage.appeui
+        LoraMessage_data["data"] = LoraMessage.networkProfile
+        LoraMessage_data["size"] = LoraMessage.size
+        LoraMessage_data["timestamp"] = LoraMessage.timestamp
+        LoraMessage_data["sqn"] = LoraMessage.sqn
 
-        return jsonify({'device': device_data})
+        return jsonify({'LoraMessage': LoraMessage_data})
 
 # add api routes and endpoints
 
-api.add_resource(DeviceList, '/devices')
-api.add_resource(Device, '/devices/<string:identifier>')
+api.add_resource(LoraMessageList, '/LoraMessage')
+api.add_resource(LoraMessage, '/LoraMessage/<string:identifier>')
 api.add_resource(UserList, '/users')
 api.add_resource(User, '/users/<string:identifier>')
 if __name__ =='__main__':
