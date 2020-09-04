@@ -127,7 +127,7 @@ class LoraMessageList(Resource):
             LoraMessage_data["deviceName"] = LoraMessage.deviceName
             LoraMessage_data["deveui"] = LoraMessage.deveui
             LoraMessage_data["appeui"] = LoraMessage.appeui
-            LoraMessage_data["data"] = LoraMessage.networkProfile
+            LoraMessage_data["data"] = LoraMessage.data
             LoraMessage_data["size"] = LoraMessage.size
             LoraMessage_data["timestamp"] = LoraMessage.timestamp
             LoraMessage_data["sqn"] = LoraMessage.sqn
@@ -174,7 +174,7 @@ class LoraMessage(Resource):
         LoraMessage_data["deviceName"] = LoraMessage.deviceName
         LoraMessage_data["deveui"] = LoraMessage.deveui
         LoraMessage_data["appeui"] = LoraMessage.appeui
-        LoraMessage_data["data"] = LoraMessage.networkProfile
+        LoraMessage_data["data"] = LoraMessage.data
         LoraMessage_data["size"] = LoraMessage.size
         LoraMessage_data["timestamp"] = LoraMessage.timestamp
         LoraMessage_data["sqn"] = LoraMessage.sqn
