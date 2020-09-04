@@ -11,21 +11,20 @@ This application uses flask and flask extentions to create a simple websever and
 
 Flask has many more extensions to extend your web applications. [Popular flask extensions](https://www.fullstackpython.com/flask-extensions-plug-ins-related-libraries.html)
 
-# How to Run Application
+# How to Run Application On conduit
 
-install all required libraries libraries using pip
+  install all required libraries libraries using pip
 for Example:
 ```
   $ pip install flask
   $ pip install flask-restful
-  $ pip install flask_sqlalchemy
-  $ pip install werkzeug
+  $ pip install flask-sqlalchemy
 ```
 before running the 'apiapp.py' script create the database using the following steps:
 
 - open python
 ```
-$ python
+$ python3
 ```
 - in python run the following lines. this will import the db from the app and create the db tables from the models
 ```
@@ -38,7 +37,7 @@ exit()
 ```
 next run the apiapp
 ```
-$ python apiapp.py
+$ python3 apiapp.py
 ```
 
 # API Documentation
@@ -118,7 +117,7 @@ on success
 ```
 
 ## Lookup LoraMessage details for a specific device
-### Definition 'GET /LoraMessage/<deveui>'
+### Definition 'GET /LoraMessage/deveui/'
 
 **Response**
 `Lora Message not found` if the LoraMessage does not exists
